@@ -7,13 +7,13 @@ plugins {
     alias(libs.plugins.vanniktech.mavenPublish)
 }
 
-group = "io.github.kotlin"
+group = "kotlinx.asm"
 version = "1.0.0"
 
 kotlin {
     jvm()
     androidLibrary {
-        namespace = "org.jetbrains.kotlinx.multiplatform.library.template"
+        namespace = "kotlinx.asm"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -24,10 +24,12 @@ kotlin {
         }
 
         compilations.configureEach {
-            compilerOptions.configure {
-                jvmTarget.set(
-                    JvmTarget.JVM_11
-                )
+            compileTaskProvider {
+                compilerOptions {
+                    jvmTarget.set(
+                        JvmTarget.JVM_11
+                    )
+                }
             }
         }
     }
@@ -37,8 +39,10 @@ kotlin {
     linuxX64()
 
     sourceSets {
-        commonMain.dependencies {
-            //put your multiplatform dependencies here
+        commonMain {
+            dependencies {
+                implementation(libs.kotlinx.io)
+            }
         }
 
         commonTest.dependencies {
@@ -55,10 +59,10 @@ mavenPublishing {
     coordinates(group.toString(), "library", version.toString())
 
     pom {
-        name = "My library"
-        description = "A library."
-        inceptionYear = "2024"
-        url = "https://github.com/kotlin/multiplatform-library-template/"
+        name = "kotlinx-asm"
+        description = "Manipulating JVM class files on Kotlin Multiplatform"
+        inceptionYear = "2026"
+        url = "https://github.com/xiguajerry/kotlinx-asm"
         licenses {
             license {
                 name = "XXX"
@@ -72,11 +76,6 @@ mavenPublishing {
                 name = "YYY"
                 url = "ZZZ"
             }
-        }
-        scm {
-            url = "XXX"
-            connection = "YYY"
-            developerConnection = "ZZZ"
         }
     }
 }
